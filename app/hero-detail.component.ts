@@ -20,7 +20,7 @@ import { Component, Input } from '@angular/core'
   ]
 })
 
-export class HeroDetailComponent {
+export class  HeroDetailComponent {
   @Input()
   hero: Hero
 }
