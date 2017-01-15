@@ -102,7 +102,6 @@ export class HeroesComponent implements OnInit {
 
   heroes: Hero[]
 
-    ;
 }
 
 

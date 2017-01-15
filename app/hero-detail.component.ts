@@ -1,26 +1,45 @@
 import { Hero } from './hero'
-import { Component, Input } from '@angular/core'
+// Keep the Input import for now, we'll remove it later:
+import { Component, Input, OnInit } from '@angular/core'
+import { ActivatedRoute, Params } from '@angular/router'
+import { Location } from '@angular/common'
 
-@Component ({
-  selector: "my-hero-detail",
-  template: `
+import { HeroService } from './hero.service';
+import 'rxjs/add/operator/switchMap';
 
-<div *ngIf = "hero">
-     <div><label>{{ hero.name }} Details</label></div>
-     <div>Id:{{ hero.id }}</div>
-     <div>
-       <label>name: </label>
-       <input [(ngModel)] = "hero.name" placeholder="name">
-     </div>
-</div>
-  `,
-  styles:[
-    ``
 
-  ]
+
+
+
+@Component({
+  moduleId: module.id,
+  selector: 'my-hero-detail',
+  templateUrl: 'hero-detail.component.html',
 })
 
-export class  HeroDetailComponent {
+
+export class HeroDetailComponent implements OnInit {
+
+  constructor(
+    private heroService : HeroService,
+    private route: ActivatedRoute,
+  private location: Location
+  ) { }
+
+  ngOnInit(): void{
+    this.route.params
+    .switchMap((params: Params)=>  this.heroService.getHero(+params['id']))
+    .subscribe(hero =>  this.hero = hero )
+  }
   @Input()
+
   hero: Hero
+
+  //Going back too far could take us out of the application.
+  // That's acceptable in a demo. We'd guard against it in a real application, perhaps with the CanDeactivate guard.
+
+  goBack(): void {
+    this.location.back();
+  }
+
 }
