@@ -22,12 +22,11 @@ export class HeroesComponent implements OnInit {
     private router: Router,
     private heroService: HeroService) { }
 
-  getHeroes(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
-  }
-
   ngOnInit(): void {
     this.getHeroes();
+  }
+  getHeroes(): void {
+    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
   }
 
   onSelect(hero: Hero): void {
@@ -36,6 +35,14 @@ export class HeroesComponent implements OnInit {
 
   gotoDetail(): void {
     this.router.navigate(['/detail', this.selectedHero.id]);
+  }
+  add(name: string): void {
+    name = name.trim()
+    if (!name) { return }
+    this.heroService.create(name)
+    .then(hero => this.heroes.push(hero)
+    this.selectedHero = null
+    )
   }
 }
 
